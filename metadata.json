@@ -1,0 +1,12 @@
+{
+    "uuid": "clipman-lite@popov895.ukr.net",
+    "name": "Clipman Lite",
+    "description": "A lightweight clipboard manager",
+    "url": "https://github.com/popov895/clipman-lite",
+    "version": 1,
+    "shell-version": ["42", "43", "44"],
+    "settings-schema": "org.gnome.shell.extensions.clipman-lite",
+    "donations": {
+        "buymeacoffee": "popov895a"
+    }
+}
