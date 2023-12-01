@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema id="org.gnome.shell.extensions.clipman-lite" path="/org/gnome/shell/extensions/clipman-lite/">
+        <key name="history-size" type="i">
+            <range min="1" max="500"/>
+            <default>15</default>
+        </key>
+        <key name="show-boundary-whitespace" type="b">
+            <default>true</default>
+        </key>
+        <key name="web-search-url" type="s">
+            <default>"https://duckduckgo.com/?q=%s"</default>
+        </key>
+        <key name="expiry-days" type="i">
+            <range min="1" max="365"/>
+            <default>7</default>
+        </key>
+        <key name="toggle-menu-shortcut" type="as">
+            <default><![CDATA[["<Super>Z"]]]></default>
+        </key>
+        <key name="toggle-private-mode-shortcut" type="as">
+            <default>[""]</default>
+        </key>
+        <key name="clear-history-shortcut" type="as">
+            <default>[""]</default>
+        </key>
+    </schema>
+</schemalist>
