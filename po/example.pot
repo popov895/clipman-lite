@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-08 12:42+0200\n"
+"POT-Creation-Date: 2024-01-08 13:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,70 +17,70 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extension.js:367
+#: extension.js:375
 msgid "Type to search..."
 msgstr ""
 
-#: extension.js:385
+#: extension.js:393
 msgid "No Matches"
 msgstr ""
 
-#: extension.js:543
+#: extension.js:551
 msgid "Failed to generate QR code"
 msgstr ""
 
-#: extension.js:550
+#: extension.js:558
 msgctxt "Close dialog"
 msgid "Close"
 msgstr ""
 
-#: extension.js:660
+#: extension.js:670
 msgid "History is Empty"
 msgstr ""
 
-#: extension.js:666
+#: extension.js:676
 msgid "Private Mode is On"
 msgstr ""
 
-#: extension.js:688
+#: extension.js:698
 msgid "Clear History"
 msgstr ""
 
-#: extension.js:693
+#: extension.js:703
 msgid "Private Mode"
 msgstr ""
 
-#: extension.js:713
+#: extension.js:723
 msgctxt "Open settings"
 msgid "Settings"
 msgstr ""
 
-#: extension.js:921
+#: extension.js:931
 msgid "Search the Web"
 msgstr ""
 
-#: extension.js:925
+#: extension.js:935
 msgid "Show QR Code"
 msgstr ""
 
-#: extension.js:934
+#: extension.js:944
 #, javascript-format
 msgid "Invalid search URL \"%s\""
 msgstr ""
 
-#: extension.js:941
+#: extension.js:951
 msgid "Failed to search the web"
 msgstr ""
 
-#: prefs.js:21
+#: prefs.js:24
 msgid "Press Backspace to clear shortcut or Esc to cancel"
 msgstr ""
 
-#: prefs.js:22
+#: prefs.js:25
 msgid "Enter a new shortcut"
 msgstr ""
 
-#: prefs.js:70
+#: prefs.js:73
 msgctxt "Keyboard shortcut is disabled"
 msgid "Disabled"
 msgstr ""
