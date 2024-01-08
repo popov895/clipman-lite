@@ -1,19 +1,27 @@
 'use strict';
 
-const { Clutter, Cogl, Gio, GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-const SignalTracker = imports.misc.signalTracker;
-const Util = imports.misc.util;
+import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as ModalDialog from 'resource:///org/gnome/shell/ui/modalDialog.js';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as SignalTracker from 'resource:///org/gnome/shell/misc/signalTracker.js';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Extension = ExtensionUtils.getCurrentExtension();
-const { Preferences } = Extension.imports.lib.preferences;
-const { QrCode } = Extension.imports.lib.qrcodegen.qrcodegen;
-const { _, logError } = Extension.imports.lib.utils;
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+
+import { default as QrCode } from './lib/qrcodegen.js';
+import { Preferences } from './lib/preferences.js';
+import { _, logError } from './lib/utils.js';
 
 const Clipboard = GObject.registerClass(
 class Clipboard extends GObject.Object {
@@ -264,7 +272,7 @@ class HistoryMenuItem extends PopupMenu.PopupSubMenuMenuItem {
     }
 
     vfunc_key_press_event(event) {
-        switch (event.keyval) {
+        switch (event.get_key_symbol()) {
             case Clutter.KEY_space:
             case Clutter.KEY_Return:
             case Clutter.KEY_KP_Enter: {
@@ -479,7 +487,7 @@ const HistoryMenuSection = class extends PopupMenu.PopupMenuSection {
             `key-focus-in`, () => {
                 const event = Clutter.get_current_event();
                 if (event && event.type() === Clutter.EventType.KEY_PRESS) {
-                    Util.ensureActorVisibleInScrollView(this.scrollView, menuItem);
+                    AnimationUtils.ensureActorVisibleInScrollView(this.scrollView, menuItem);
                 }
             },
             `notify::pinned`, this._onMenuItemPinned.bind(this)
@@ -612,8 +620,10 @@ class QrCodeDialog extends ModalDialog.ModalDialog {
 
 const PanelIndicator = GObject.registerClass(
 class PanelIndicator extends PanelMenu.Button {
-    constructor() {
+    constructor(extension) {
         super(0.5);
+
+        this._extension = extension;
 
         this._buildIcon();
         this._buildMenu();
@@ -627,7 +637,7 @@ class PanelIndicator extends PanelMenu.Button {
             }
         });
 
-        this._preferences = new Preferences();
+        this._preferences = new Preferences(this._extension.getSettings());
         this._preferences.connectObject(`notify::historySize`, this._onHistorySizeChanged.bind(this));
 
         this._addKeybindings();
@@ -658,13 +668,13 @@ class PanelIndicator extends PanelMenu.Button {
     _buildMenu() {
         this._emptyPlaceholder = new PlaceholderMenuItem(
             _(`History is Empty`),
-            Gio.icon_new_for_string(`${Extension.path}/icons/empty-symbolic.svg`)
+            Gio.icon_new_for_string(`${this._extension.path}/icons/empty-symbolic.svg`)
         );
         this.menu.addMenuItem(this._emptyPlaceholder);
 
         this._privateModePlaceholder = new PlaceholderMenuItem(
             _(`Private Mode is On`),
-            Gio.icon_new_for_string(`${Extension.path}/icons/private-mode-symbolic.svg`)
+            Gio.icon_new_for_string(`${this._extension.path}/icons/private-mode-symbolic.svg`)
         );
         this.menu.addMenuItem(this._privateModePlaceholder);
 
@@ -711,7 +721,7 @@ class PanelIndicator extends PanelMenu.Button {
         this.menu.addMenuItem(this._privateModeMenuItem);
 
         this.menu.addAction(_(`Settings`, `Open settings`), () => {
-            ExtensionUtils.openPrefs();
+            this._extension.openPreferences();
         });
 
         this.menu.actor.connectObject(`captured-event`, (...[, event]) => {
@@ -1041,19 +1051,19 @@ const panelIndicator = {
     },
 };
 
-var init = () => {
-    SignalTracker.registerDestroyableType(Clipboard);
-    SignalTracker.registerDestroyableType(Preferences);
+export default class extends Extension {
+    static {
+        SignalTracker.registerDestroyableType(Clipboard);
+        SignalTracker.registerDestroyableType(Preferences);
+    }
 
-    ExtensionUtils.initTranslations(Extension.uuid);
-};
+    enable() {
+        panelIndicator.instance = new PanelIndicator(this);
+        Main.panel.addToStatusArea(`${this.metadata.name}`, panelIndicator.instance);
+    }
 
-var enable = () => {
-    panelIndicator.instance = new PanelIndicator();
-    Main.panel.addToStatusArea(`${Extension.metadata.name}`, panelIndicator.instance);
-};
-
-var disable = () => {
-    panelIndicator.instance.destroy();
-    delete panelIndicator.instance;
-};
+    disable() {
+        panelIndicator.instance.destroy();
+        delete panelIndicator.instance;
+    }
+}
