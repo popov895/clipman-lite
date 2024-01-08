@@ -1,0 +1,128 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-08 12:42+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: extension.js:367
+msgid "Type to search..."
+msgstr ""
+
+#: extension.js:385
+msgid "No Matches"
+msgstr ""
+
+#: extension.js:543
+msgid "Failed to generate QR code"
+msgstr ""
+
+#: extension.js:550
+msgctxt "Close dialog"
+msgid "Close"
+msgstr ""
+
+#: extension.js:660
+msgid "History is Empty"
+msgstr ""
+
+#: extension.js:666
+msgid "Private Mode is On"
+msgstr ""
+
+#: extension.js:688
+msgid "Clear History"
+msgstr ""
+
+#: extension.js:693
+msgid "Private Mode"
+msgstr ""
+
+#: extension.js:713
+msgctxt "Open settings"
+msgid "Settings"
+msgstr ""
+
+#: extension.js:921
+msgid "Search the Web"
+msgstr ""
+
+#: extension.js:925
+msgid "Show QR Code"
+msgstr ""
+
+#: extension.js:934
+#, javascript-format
+msgid "Invalid search URL \"%s\""
+msgstr ""
+
+#: extension.js:941
+msgid "Failed to search the web"
+msgstr ""
+
+#: prefs.js:21
+msgid "Press Backspace to clear shortcut or Esc to cancel"
+msgstr ""
+
+#: prefs.js:22
+msgid "Enter a new shortcut"
+msgstr ""
+
+#: prefs.js:70
+msgctxt "Keyboard shortcut is disabled"
+msgid "Disabled"
+msgstr ""
+
+#: prefs.js:122
+msgid "History size"
+msgstr ""
+
+#: prefs.js:138
+msgid "Show leading and trailing whitespace"
+msgstr ""
+
+#: prefs.js:143
+msgctxt "General options"
+msgid "General"
+msgstr ""
+
+#: prefs.js:149
+#, javascript-format
+msgid "URL with %s in place of query"
+msgstr ""
+
+#: prefs.js:162
+msgid "Web search URL"
+msgstr ""
+
+#: prefs.js:167
+msgid "Web Search"
+msgstr ""
+
+#: prefs.js:172
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: prefs.js:175
+msgid "Toggle menu"
+msgstr ""
+
+#: prefs.js:180
+msgid "Toggle private mode"
+msgstr ""
+
+#: prefs.js:185
+msgid "Clear history"
+msgstr ""
