@@ -1,11 +1,14 @@
 'use strict';
 
-const { Adw, Gdk, GObject, Gtk } = imports.gi;
+import Adw from 'gi://Adw';
+import Gdk from 'gi://Gdk';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Extension = ExtensionUtils.getCurrentExtension();
-const { Preferences } = Extension.imports.lib.preferences;
-const { _ } = Extension.imports.lib.utils;
+import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+
+import { Preferences } from './lib/preferences.js';
+import { _ } from './lib/utils.js';
 
 const ShortcutWindow = GObject.registerClass(
 class ShortcutWindow extends Adw.Window {
@@ -92,132 +95,130 @@ class ShortcutRow extends Adw.ActionRow {
     }
 });
 
-var init = () => {
-    ExtensionUtils.initTranslations(Extension.uuid);
-};
+export default class extends ExtensionPreferences {
+    fillPreferencesWindow(window) {
+        window._preferences = new Preferences(this);
+        window.connect(`close-request`, () => {
+            window._preferences.destroy();
+        });
 
-var fillPreferencesWindow = (window) => {
-    window._preferences = new Preferences();
-    window.connect(`close-request`, () => {
-        window._preferences.destroy();
-    });
+        const historySizeSpinBox = new Gtk.SpinButton({
+            adjustment: new Gtk.Adjustment({
+                lower: 1,
+                upper: 500,
+                step_increment: 1,
+            }),
+            valign: Gtk.Align.CENTER,
+        });
+        window._preferences.bind_property(
+            `historySize`,
+            historySizeSpinBox,
+            `value`,
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        );
 
-    const historySizeSpinBox = new Gtk.SpinButton({
-        adjustment: new Gtk.Adjustment({
-            lower: 1,
-            upper: 500,
-            step_increment: 1,
-        }),
-        valign: Gtk.Align.CENTER,
-    });
-    window._preferences.bind_property(
-        `historySize`,
-        historySizeSpinBox,
-        `value`,
-        GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
-    );
+        const historySizeRow = new Adw.ActionRow({
+            activatable_widget: historySizeSpinBox,
+            title: _(`History size`),
+        });
+        historySizeRow.add_suffix(historySizeSpinBox);
 
-    const historySizeRow = new Adw.ActionRow({
-        activatable_widget: historySizeSpinBox,
-        title: _(`History size`),
-    });
-    historySizeRow.add_suffix(historySizeSpinBox);
+        const boundaryWhitespaceSwitch = new Gtk.Switch({
+            valign: Gtk.Align.CENTER,
+        });
+        window._preferences.bind_property(
+            `showBoundaryWhitespace`,
+            boundaryWhitespaceSwitch,
+            `active`,
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        );
 
-    const boundaryWhitespaceSwitch = new Gtk.Switch({
-        valign: Gtk.Align.CENTER,
-    });
-    window._preferences.bind_property(
-        `showBoundaryWhitespace`,
-        boundaryWhitespaceSwitch,
-        `active`,
-        GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
-    );
+        const boundaryWhitespaceRow = new Adw.ActionRow({
+            activatable_widget: boundaryWhitespaceSwitch,
+            title: _(`Show leading and trailing whitespace`),
+        });
+        boundaryWhitespaceRow.add_suffix(boundaryWhitespaceSwitch);
 
-    const boundaryWhitespaceRow = new Adw.ActionRow({
-        activatable_widget: boundaryWhitespaceSwitch,
-        title: _(`Show leading and trailing whitespace`),
-    });
-    boundaryWhitespaceRow.add_suffix(boundaryWhitespaceSwitch);
+        const generalGroup = new Adw.PreferencesGroup({
+            title: _(`General`, `General options`),
+        });
+        generalGroup.add(historySizeRow);
+        generalGroup.add(boundaryWhitespaceRow);
 
-    const generalGroup = new Adw.PreferencesGroup({
-        title: _(`General`, `General options`),
-    });
-    generalGroup.add(historySizeRow);
-    generalGroup.add(boundaryWhitespaceRow);
+        const webSearchUrlEntry = new Gtk.Entry({
+            placeholder_text: _(`URL with %s in place of query`),
+            valign: Gtk.Align.CENTER,
+        });
+        webSearchUrlEntry.set_size_request(300, -1);
+        window._preferences.bind_property(
+            `webSearchUrl`,
+            webSearchUrlEntry,
+            `text`,
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        );
 
-    const webSearchUrlEntry = new Gtk.Entry({
-        placeholder_text: _(`URL with %s in place of query`),
-        valign: Gtk.Align.CENTER,
-    });
-    webSearchUrlEntry.set_size_request(300, -1);
-    window._preferences.bind_property(
-        `webSearchUrl`,
-        webSearchUrlEntry,
-        `text`,
-        GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
-    );
+        const webSearchUrlRow = new Adw.ActionRow({
+            activatable_widget: webSearchUrlEntry,
+            title: _(`Search URL`),
+        });
+        webSearchUrlRow.add_suffix(webSearchUrlEntry);
 
-    const webSearchUrlRow = new Adw.ActionRow({
-        activatable_widget: webSearchUrlEntry,
-        title: _(`Search URL`),
-    });
-    webSearchUrlRow.add_suffix(webSearchUrlEntry);
+        const webSearchGroup = new Adw.PreferencesGroup({
+            title: _(`Web Search`),
+        });
+        webSearchGroup.add(webSearchUrlRow);
 
-    const webSearchGroup = new Adw.PreferencesGroup({
-        title: _(`Web Search`),
-    });
-    webSearchGroup.add(webSearchUrlRow);
+        const expiryDaysSpinBox = new Gtk.SpinButton({
+            adjustment: new Gtk.Adjustment({
+                lower: 1,
+                upper: 365,
+                step_increment: 1,
+            }),
+            valign: Gtk.Align.CENTER,
+        });
+        window._preferences.bind_property(
+            `expiryDays`,
+            expiryDaysSpinBox,
+            `value`,
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        );
 
-    const expiryDaysSpinBox = new Gtk.SpinButton({
-        adjustment: new Gtk.Adjustment({
-            lower: 1,
-            upper: 365,
-            step_increment: 1,
-        }),
-        valign: Gtk.Align.CENTER,
-    });
-    window._preferences.bind_property(
-        `expiryDays`,
-        expiryDaysSpinBox,
-        `value`,
-        GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
-    );
+        const expiryDaysRow = new Adw.ActionRow({
+            activatable_widget: expiryDaysSpinBox,
+            title: _(`Days to keep`, `The number of days to keep the shared text`),
+        });
+        expiryDaysRow.add_suffix(expiryDaysSpinBox);
 
-    const expiryDaysRow = new Adw.ActionRow({
-        activatable_widget: expiryDaysSpinBox,
-        title: _(`Days to keep`, `The number of days to keep the shared text`),
-    });
-    expiryDaysRow.add_suffix(expiryDaysSpinBox);
+        const sharingOnlineGroup = new Adw.PreferencesGroup({
+            title: _(`Sharing Online`),
+        });
+        sharingOnlineGroup.add(expiryDaysRow);
 
-    const sharingOnlineGroup = new Adw.PreferencesGroup({
-        title: _(`Sharing Online`),
-    });
-    sharingOnlineGroup.add(expiryDaysRow);
+        const keybindingGroup = new Adw.PreferencesGroup({
+            title: _(`Keyboard Shortcuts`),
+        });
+        keybindingGroup.add(new ShortcutRow(
+            _(`Toggle menu`),
+            window._preferences,
+            `toggleMenuShortcut`
+        ));
+        keybindingGroup.add(new ShortcutRow(
+            _(`Toggle private mode`),
+            window._preferences,
+            `togglePrivateModeShortcut`
+        ));
+        keybindingGroup.add(new ShortcutRow(
+            _(`Clear history`),
+            window._preferences,
+            `clearHistoryShortcut`
+        ));
 
-    const keybindingGroup = new Adw.PreferencesGroup({
-        title: _(`Keyboard Shortcuts`),
-    });
-    keybindingGroup.add(new ShortcutRow(
-        _(`Toggle menu`),
-        window._preferences,
-        `toggleMenuShortcut`
-    ));
-    keybindingGroup.add(new ShortcutRow(
-        _(`Toggle private mode`),
-        window._preferences,
-        `togglePrivateModeShortcut`
-    ));
-    keybindingGroup.add(new ShortcutRow(
-        _(`Clear history`),
-        window._preferences,
-        `clearHistoryShortcut`
-    ));
+        const page = new Adw.PreferencesPage();
+        page.add(generalGroup);
+        page.add(webSearchGroup);
+        page.add(sharingOnlineGroup);
+        page.add(keybindingGroup);
 
-    const page = new Adw.PreferencesPage();
-    page.add(generalGroup);
-    page.add(webSearchGroup);
-    page.add(sharingOnlineGroup);
-    page.add(keybindingGroup);
-
-    window.add(page);
-};
+        window.add(page);
+    }
+}
