@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-15 14:08+0200\n"
+"POT-Creation-Date: 2024-02-29 11:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,82 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: extension.js:403
-msgid "Type to search..."
-msgstr ""
-
-#: extension.js:421
-msgid "No Matches"
-msgstr ""
-
-#: extension.js:579
-msgid "Failed to generate QR code"
-msgstr ""
-
-#: extension.js:586
-msgctxt "Close dialog"
-msgid "Close"
-msgstr ""
-
-#: extension.js:698
-msgid "History is Empty"
-msgstr ""
-
-#: extension.js:704
-msgid "Private Mode is On"
-msgstr ""
-
-#: extension.js:726
-msgid "Clear History"
-msgstr ""
-
-#: extension.js:736
-msgid "Private Mode"
-msgstr ""
-
-#: extension.js:756
-msgctxt "Open settings"
-msgid "Settings"
-msgstr ""
-
-#: extension.js:1016
-msgid "Search the Web"
-msgstr ""
-
-#: extension.js:1020
-msgid "Share Online"
-msgstr ""
-
-#: extension.js:1024
-msgid "Show QR Code"
-msgstr ""
-
-#: extension.js:1033
-#, javascript-format
-msgid "Invalid search URL \"%s\""
-msgstr ""
-
-#: extension.js:1040
-msgid "Failed to search the web"
-msgstr ""
-
-#: extension.js:1082
-msgid "The text was successfully shared online"
-msgstr ""
-
-#: extension.js:1084
-msgid "Failed to share the text online"
-msgstr ""
-
-#: prefs.js:21
+#: prefs.js:24
 msgid "Press Backspace to clear shortcut or Esc to cancel"
 msgstr ""
 
-#: prefs.js:22
+#: prefs.js:25
 msgid "Enter a new shortcut"
 msgstr ""
 
-#: prefs.js:70
+#: prefs.js:73
 msgctxt "Keyboard shortcut is disabled"
 msgid "Disabled"
 msgstr ""
@@ -146,4 +79,71 @@ msgstr ""
 
 #: prefs.js:211
 msgid "Clear history"
+msgstr ""
+
+#: extension.js:412
+msgid "Type to search..."
+msgstr ""
+
+#: extension.js:430
+msgid "No Matches"
+msgstr ""
+
+#: extension.js:588
+msgid "Failed to generate QR code"
+msgstr ""
+
+#: extension.js:595
+msgctxt "Close dialog"
+msgid "Close"
+msgstr ""
+
+#: extension.js:709
+msgid "History is Empty"
+msgstr ""
+
+#: extension.js:715
+msgid "Private Mode is On"
+msgstr ""
+
+#: extension.js:737
+msgid "Clear History"
+msgstr ""
+
+#: extension.js:747
+msgid "Private Mode"
+msgstr ""
+
+#: extension.js:767
+msgctxt "Open settings"
+msgid "Settings"
+msgstr ""
+
+#: extension.js:1027
+msgid "Search the Web"
+msgstr ""
+
+#: extension.js:1031
+msgid "Share Online"
+msgstr ""
+
+#: extension.js:1035
+msgid "Show QR Code"
+msgstr ""
+
+#: extension.js:1044
+#, javascript-format
+msgid "Invalid search URL \"%s\""
+msgstr ""
+
+#: extension.js:1051
+msgid "Failed to search the web"
+msgstr ""
+
+#: extension.js:1093
+msgid "The text was successfully shared online"
+msgstr ""
+
+#: extension.js:1095
+msgid "Failed to share the text online"
 msgstr ""
