@@ -581,7 +581,6 @@ class QrCodeDialog extends ModalDialog.ModalDialog {
         }
 
         this.addButton({
-            isDefault: true,
             key: Clutter.KEY_Escape,
             label: _(`Close`, `Close dialog`),
             action: () => {
