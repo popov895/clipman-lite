@@ -177,9 +177,9 @@ class HistoryMenuItem extends PopupMenu.PopupSubMenuMenuItem {
         const box = new St.BoxLayout({
             style_class: `clipman-menuitembuttonbox`,
         });
-        box.add(pinButton);
-        box.add(deleteButton);
-        box.add(toggleSubMenuButton);
+        box.add_child(pinButton);
+        box.add_child(deleteButton);
+        box.add_child(toggleSubMenuButton);
         this.add_child(box);
 
         const clickAction = new Clutter.ClickAction({
@@ -423,7 +423,7 @@ const HistoryMenuSection = class extends PopupMenu.PopupMenuSection {
             style_class: `clipman-searchmenuitem`,
         });
         searchMenuItem.setOrnament(PopupMenu.Ornament.HIDDEN);
-        searchMenuItem.add(this.entry);
+        searchMenuItem.add_child(this.entry);
         this.addMenuItem(searchMenuItem);
 
         const placeholderLabel = new St.Label({
@@ -433,7 +433,7 @@ const HistoryMenuSection = class extends PopupMenu.PopupMenuSection {
         this._placeholderMenuItem = new PopupMenu.PopupMenuSection();
         this._placeholderMenuItem.actor.style_class = `popup-menu-item`;
         this._placeholderMenuItem.actor.visible = false;
-        this._placeholderMenuItem.actor.add(placeholderLabel);
+        this._placeholderMenuItem.actor.add_child(placeholderLabel);
         this.addMenuItem(this._placeholderMenuItem);
 
         this.section = new PopupMenu.PopupMenuSection();
@@ -444,12 +444,12 @@ const HistoryMenuSection = class extends PopupMenu.PopupMenuSection {
             }
         };
         this.section.box.connectObject(
-            `actor-added`, (...[, actor]) => {
+            `child-added`, (...[, actor]) => {
                 if (actor instanceof HistoryMenuItem) {
                     this._onMenuItemAdded(actor);
                 }
             },
-            `actor-removed`, (...[, actor]) => {
+            `child-removed`, (...[, actor]) => {
                 if (actor instanceof HistoryMenuItem) {
                     this._onMenuItemRemoved(actor);
                 }
@@ -459,10 +459,10 @@ const HistoryMenuSection = class extends PopupMenu.PopupMenuSection {
             hscrollbar_policy: St.PolicyType.NEVER,
             vscrollbar_policy: St.PolicyType.EXTERNAL,
         });
-        this.scrollView.add_actor(this.section.actor);
-        this.scrollView.vscroll.adjustment.connectObject(`changed`, () => {
+        this.scrollView.add_child(this.section.actor);
+        this.scrollView.vadjustment.connectObject(`changed`, () => {
             Promise.resolve().then(() => {
-                if (Math.floor(this.scrollView.vscroll.adjustment.upper) > this.scrollView.vscroll.adjustment.page_size) {
+                if (Math.floor(this.scrollView.vadjustment.upper) > this.scrollView.vadjustment.page_size) {
                     this.scrollView.vscrollbar_policy = St.PolicyType.ALWAYS;
                 } else {
                     this.scrollView.vscrollbar_policy = St.PolicyType.EXTERNAL;
@@ -470,12 +470,12 @@ const HistoryMenuSection = class extends PopupMenu.PopupMenuSection {
             });
         });
         const menuSection = new PopupMenu.PopupMenuSection();
-        menuSection.actor.add_actor(this.scrollView);
+        menuSection.actor.add_child(this.scrollView);
         this.addMenuItem(menuSection);
 
         this.actor.connectObject(`notify::mapped`, () => {
             if (!this.actor.mapped) {
-                this.scrollView.vscroll.adjustment.value = 0;
+                this.scrollView.vadjustment.value = 0;
                 this.entry.showPinnedOnly = false;
                 this.entry.text = ``;
             }
@@ -568,7 +568,7 @@ const PlaceholderMenuItem = class extends PopupMenu.PopupMenuSection {
             text: text,
             x_align: Clutter.ActorAlign.CENTER,
         }));
-        this.actor.add(box);
+        this.actor.add_child(box);
     }
 };
 
@@ -719,12 +719,12 @@ class PanelIndicator extends PanelMenu.Button {
 
         this._historySection = new HistoryMenuSection();
         this._historySection.section.box.connectObject(
-            `actor-added`, (...[, actor]) => {
+            `child-added`, (...[, actor]) => {
                 if (actor instanceof HistoryMenuItem) {
                     this._updateMenuLayout();
                 }
             },
-            `actor-removed`, (...[, actor]) => {
+            `child-removed`, (...[, actor]) => {
                 if (actor instanceof HistoryMenuItem) {
                     this._updateMenuLayout();
                 }
@@ -1107,21 +1107,13 @@ class PanelIndicator extends PanelMenu.Button {
     }
 
     _showNotification(message, details, isTransient = true) {
-        if (!this._notificationSource) {
-            this._notificationSource = new MessageTray.SystemNotificationSource();
-            this._notificationSource.connectObject(`destroy`, () => {
-                delete this._notificationSource;
-            });
-            Main.messageTray.add(this._notificationSource);
-        }
-
-        const notification = new MessageTray.Notification(
-            this._notificationSource,
-            message,
-            details
-        );
-        notification.setTransient(isTransient);
-        this._notificationSource.showNotification(notification);
+        const source = MessageTray.getSystemSource();
+        source.addNotification(new MessageTray.Notification({
+            body: details,
+            isTransient,
+            source,
+            title: message,
+        }));
     }
 
     _onClipboardTextChanged(text) {

@@ -4,7 +4,7 @@
     "description": "A lightweight clipboard manager",
     "url": "https://github.com/popov895/clipman-lite",
     "version": 1,
-    "shell-version": ["45"],
+    "shell-version": ["46"],
     "settings-schema": "org.gnome.shell.extensions.clipman-lite",
     "donations": {
         "buymeacoffee": "popov895a"
