@@ -6,6 +6,12 @@
     padding: 2px;
 }
 
+.clipman-colorpreview {
+    border-radius: 8px;
+    height: 16px;
+    width: 16px;
+}
+
 .clipman-searchentry {
     border-radius: 18px;
     padding: 7px 12px;
