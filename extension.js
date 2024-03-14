@@ -724,11 +724,8 @@ class PanelIndicator extends PanelMenu.Button {
 
         this._clearMenuItem = new PopupMenu.PopupMenuItem(_(`Clear History`));
         this._clearMenuItem.activate = () => {
-            const menuItems = this._getMenuItems();
-            if (menuItems.getPinned().length === 0) {
-                this.menu.close();
-            }
-            menuItems.getNotPinned().erase();
+            this.menu.close();
+            this._getMenuItems().getNotPinned().erase();
         };
         this.menu.addMenuItem(this._clearMenuItem);
 
