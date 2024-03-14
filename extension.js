@@ -111,6 +111,16 @@ class HistoryMenuItem extends PopupMenu.PopupSubMenuMenuItem {
         this.text = text;
         this.label.clutter_text.ellipsize = Pango.EllipsizeMode.END;
 
+        const [ok, color] = this._parseColor(text.trim());
+        if (ok) {
+            this.insert_child_at_index(new St.Bin({
+                opacity: color.alpha,
+                style: `background: rgb(${color.red}, ${color.green}, ${color.blue});`,
+                style_class: `clipman-colorpreview`,
+                y_align: Clutter.ActorAlign.CENTER,
+            }), 1);
+        }
+
         this.setOrnament(PopupMenu.Ornament.NONE);
 
         this.menu.actor.enable_mouse_scrolling = false;
@@ -272,6 +282,49 @@ class HistoryMenuItem extends PopupMenu.PopupSubMenuMenuItem {
                 return this;
             },
         };
+    }
+
+    _parseColor(text) {
+        const colorSpaces = [
+            {
+                prefix: `rgba`,
+                regExpList: [
+                    /^rgba?\(\s*(\d{1,3}%?)\s*,\s*(\d{1,3}%?)\s*,\s*(\d{1,3}%?)(?:\s*,\s*(\d{1,3}%|0?.\d+))?\s*\)$/i,
+                    /^rgba?\(\s*(\d{1,3}%?)\s+(\d{1,3}%?)\s+(\d{1,3}%?)(?:\s*?\/\s*?(\d{1,3}%|0?.\d+))?\s*\)$/i,
+                ],
+            },
+            {
+                prefix: `hsla`,
+                regExpList: [
+                    /^hsla?\(\s*(\d{1,3})\s*,\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)(?:\s*,\s*(\d{1,3}%|0?.\d+))?\s*\)$/i,
+                    /^hsla?\(\s*(\d{1,3})\s+(\d{1,3}%)\s+(\d{1,3}%)(?:\s*\/\s+(\d{1,3}%|0?.\d+))?\s*\)$/i,
+                ],
+            },
+        ];
+
+        for (const { prefix, regExpList } of colorSpaces) {
+            for (const regExp of regExpList) {
+                const match = text.match(regExp);
+                if (match) {
+                    let [, red, green, blue, alpha] = match;
+                    if (alpha) {
+                        const percentMatch = alpha.match(/(\d+)%/);
+                        if (percentMatch) {
+                            alpha = percentMatch[1] / 100;
+                        }
+                    }
+                    return Clutter.Color.from_string(
+                        `${prefix}(${red}, ${green}, ${blue}, ${alpha ?? 1})`
+                    );
+                }
+            }
+        }
+
+        if (/^#[0-9a-f]{3,8}$/i.test(text) || /^[a-z]{3,}$/i.test(text)) {
+            return Clutter.Color.from_string(text);
+        }
+
+        return [false, new Clutter.Color()];
     }
 
     _updateText() {
