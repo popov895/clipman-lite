@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-29 11:31+0200\n"
+"POT-Creation-Date: 2024-03-17 18:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,69 +81,69 @@ msgstr ""
 msgid "Clear history"
 msgstr ""
 
-#: extension.js:412
+#: extension.js:465
 msgid "Type to search..."
 msgstr ""
 
-#: extension.js:430
+#: extension.js:483
 msgid "No Matches"
 msgstr ""
 
-#: extension.js:588
+#: extension.js:641
 msgid "Failed to generate QR code"
 msgstr ""
 
-#: extension.js:595
+#: extension.js:647
 msgctxt "Close dialog"
 msgid "Close"
 msgstr ""
 
-#: extension.js:709
+#: extension.js:761
 msgid "History is Empty"
 msgstr ""
 
-#: extension.js:715
+#: extension.js:767
 msgid "Private Mode is On"
 msgstr ""
 
-#: extension.js:737
+#: extension.js:789
 msgid "Clear History"
 msgstr ""
 
-#: extension.js:747
+#: extension.js:796
 msgid "Private Mode"
 msgstr ""
 
-#: extension.js:767
+#: extension.js:816
 msgctxt "Open settings"
 msgid "Settings"
 msgstr ""
 
-#: extension.js:1027
+#: extension.js:1076
 msgid "Search the Web"
 msgstr ""
 
-#: extension.js:1031
+#: extension.js:1080
 msgid "Share Online"
 msgstr ""
 
-#: extension.js:1035
+#: extension.js:1084
 msgid "Show QR Code"
 msgstr ""
 
-#: extension.js:1044
+#: extension.js:1093
 #, javascript-format
 msgid "Invalid search URL \"%s\""
 msgstr ""
 
-#: extension.js:1051
+#: extension.js:1100
 msgid "Failed to search the web"
 msgstr ""
 
-#: extension.js:1093
+#: extension.js:1142
 msgid "The text was successfully shared online"
 msgstr ""
 
-#: extension.js:1095
+#: extension.js:1144
 msgid "Failed to share the text online"
 msgstr ""
