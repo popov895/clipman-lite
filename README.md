@@ -39,4 +39,4 @@ This extension uses [dpaste.com](https://dpaste.com) to share text online.
 
 ### Support
 
-[![Support via Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-1.svg)](https://www.buymeacoffee.com/popov895a)
+- PayPal: popov895@ukr.net
