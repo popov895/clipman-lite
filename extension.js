@@ -1027,44 +1027,43 @@ class PanelIndicator extends PanelMenu.Button {
         if (!this._privateModeMenuItem.state) {
             this._updateCurrentMenuItem();
         }
-
-        this._updateMenuLayout();
     }
 
     _loadState() {
-        this._privateModeMenuItem.setToggleState(panelIndicator.state.privateMode);
-
-        if (!panelIndicator.state.history) {
+        if (!this._extension._state) {
             this._loadHistory();
-        } else if (panelIndicator.state.history.length > 0) {
-            panelIndicator.state.history.forEach((entry) => {
-                this._historySection.section.addMenuItem(
-                    this._createMenuItem(entry.text, entry.pinned, entry.id)
-                );
-            });
-            panelIndicator.state.history.length = 0;
+        } else {
+            this._privateModeMenuItem.setToggleState(this._extension._state.privateMode);
 
-            if (!this._privateModeMenuItem.state) {
-                this._updateCurrentMenuItem();
+            if (this._extension._state.history.length > 0) {
+                this._extension._state.history.forEach((entry) => {
+                    this._historySection.section.addMenuItem(
+                        this._createMenuItem(entry.text, entry.pinned, entry.id)
+                    );
+                });
+                this._extension._state.history.length = 0;
+
+                if (!this._privateModeMenuItem.state) {
+                    this._updateCurrentMenuItem();
+                }
             }
-
-            this._updateMenuLayout();
         }
     }
 
     _saveState() {
         if (Main.sessionMode.currentMode !== `unlock-dialog`) {
-            panelIndicator.state.privateMode = false;
-            delete panelIndicator.state.history;
+            delete this._extension._state;
         } else {
-            panelIndicator.state.privateMode = this._privateModeMenuItem.state;
-            panelIndicator.state.history = this._getMenuItems().map((menuItem) => {
-                return {
-                    id: menuItem.id,
-                    text: menuItem.text,
-                    pinned: menuItem.pinned,
-                };
-            });
+            this._extension._state = {
+                privateMode: this._privateModeMenuItem.state,
+                history: this._getMenuItems().map((menuItem) => {
+                    return {
+                        id: menuItem.id,
+                        text: menuItem.text,
+                        pinned: menuItem.pinned,
+                    };
+                }),
+            };
         }
     }
 
@@ -1136,7 +1135,7 @@ class PanelIndicator extends PanelMenu.Button {
                             .send_and_read_finish(result)
                             .get_data()
                     ).trim();
-                    if (panelIndicator.instance && !this._privateModeMenuItem.state) {
+                    if (this._extension._indicator && !this._privateModeMenuItem.state) {
                         this._clipboard.setText(uri);
                     }
                     this._showNotification(_(`The text was successfully shared online`), uri, false);
@@ -1264,14 +1263,6 @@ class PanelIndicator extends PanelMenu.Button {
     }
 });
 
-const panelIndicator = {
-    instance: null,
-    state: {
-        history: null,
-        privateMode: false,
-    },
-};
-
 export default class extends Extension {
     static {
         SignalTracker.registerDestroyableType(Clipboard);
@@ -1279,12 +1270,12 @@ export default class extends Extension {
     }
 
     enable() {
-        panelIndicator.instance = new PanelIndicator(this);
-        Main.panel.addToStatusArea(`${this.metadata.name}`, panelIndicator.instance);
+        this._indicator = new PanelIndicator(this);
+        Main.panel.addToStatusArea(`${this.metadata.name}`, this._indicator);
     }
 
     disable() {
-        panelIndicator.instance.destroy();
-        delete panelIndicator.instance;
+        this._indicator.destroy();
+        delete this._indicator;
     }
 }
