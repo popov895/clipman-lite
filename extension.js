@@ -313,7 +313,7 @@ class HistoryMenuItem extends PopupMenu.PopupSubMenuMenuItem {
                             alpha = percentMatch[1] / 100;
                         }
                     }
-                    return Clutter.Color.from_string(
+                    return Cogl.Color.from_string(
                         `${prefix}(${red}, ${green}, ${blue}, ${alpha ?? 1})`
                     );
                 }
@@ -321,10 +321,10 @@ class HistoryMenuItem extends PopupMenu.PopupSubMenuMenuItem {
         }
 
         if (/^#[0-9a-f]{3,8}$/i.test(text) || /^[a-z]{3,}$/i.test(text)) {
-            return Clutter.Color.from_string(text);
+            return Cogl.Color.from_string(text);
         }
 
-        return [false, new Clutter.Color()];
+        return [false, new Cogl.Color()];
     }
 
     _updateText() {
