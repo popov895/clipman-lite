@@ -691,7 +691,7 @@ class QrCodeDialog extends ModalDialog.ModalDialog {
                 iconSize * bytesPerPixel
             );
         } catch (error) {
-            logError(error);
+            logError(`Failed to generate QR code`, error);
         }
 
         return image;
@@ -867,7 +867,7 @@ class PanelIndicator extends PanelMenu.Button {
                 }
                 this._destroyMenuItem(menuItem);
                 if (menuItem.pinned) {
-                    this._storage.saveEntries(this._getMenuItems().getPinned(), logError);
+                    this._storage.saveEntries(this._getMenuItems().getPinned());
                 }
             },
             `destroy`, () => {
@@ -899,7 +899,7 @@ class PanelIndicator extends PanelMenu.Button {
         menuItem.destroy();
 
         if (menuItem.pinned) {
-            this._storage.deleteEntryContent(menuItem, logError);
+            this._storage.deleteEntryContent(menuItem);
         }
     }
 
@@ -912,7 +912,7 @@ class PanelIndicator extends PanelMenu.Button {
                 if (currentMenuItem && menuItems[0] !== currentMenuItem) {
                     this._historySection.section.moveMenuItem(currentMenuItem, 0);
                     if (currentMenuItem.pinned) {
-                        this._storage.saveEntries(this._getMenuItems().getPinned(), logError);
+                        this._storage.saveEntries(this._getMenuItems().getPinned());
                     }
                 }
             }
@@ -995,7 +995,7 @@ class PanelIndicator extends PanelMenu.Button {
     }
 
     _loadHistory() {
-        const entries = this._storage.loadEntries(logError);
+        const entries = this._storage.loadEntries();
         if (entries.length === 0) {
             return;
         }
@@ -1005,7 +1005,7 @@ class PanelIndicator extends PanelMenu.Button {
                 return;
             }
 
-            this._storage.loadEntryContent(entry, logError);
+            this._storage.loadEntryContent(entry);
             if (!entry.text) {
                 return;
             }
@@ -1172,7 +1172,7 @@ class PanelIndicator extends PanelMenu.Button {
                 if (menuItems[0] !== currentMenuItem) {
                     this._historySection.section.moveMenuItem(currentMenuItem, 0);
                     if (currentMenuItem.pinned) {
-                        this._storage.saveEntries(this._getMenuItems().getPinned(), logError);
+                        this._storage.saveEntries(this._getMenuItems().getPinned());
                     }
                 }
             } else {
@@ -1195,15 +1195,15 @@ class PanelIndicator extends PanelMenu.Button {
 
     _onMenuItemPinned(menuItem) {
         if (menuItem.pinned) {
-            this._storage.saveEntryContent(menuItem, logError);
+            this._storage.saveEntryContent(menuItem);
         } else {
             this._getMenuItems().getNotPinned().erase(this._preferences.historySize);
-            this._storage.deleteEntryContent(menuItem, logError);
+            this._storage.deleteEntryContent(menuItem);
         }
 
         this._updateMenuLayout();
 
-        this._storage.saveEntries(this._getMenuItems().getPinned(), logError);
+        this._storage.saveEntries(this._getMenuItems().getPinned());
     }
 
     _onMenuKeyPressEvent(event) {
