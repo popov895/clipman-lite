@@ -3,7 +3,7 @@
     "name": "Clipman Lite",
     "description": "A lightweight clipboard manager",
     "url": "https://github.com/popov895/clipman-lite",
-    "version": 4,
+    "version": 5,
     "shell-version": ["47", "48"],
     "settings-schema": "org.gnome.shell.extensions.clipman-lite",
     "donations": {
