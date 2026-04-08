@@ -192,20 +192,20 @@ class HistoryMenuItem extends PopupMenu.PopupSubMenuMenuItem {
         box.add_child(toggleSubMenuButton);
         this.add_child(box);
 
-        const clickAction = new Clutter.ClickAction({
+        const clickGesture = new Clutter.ClickGesture({
             enabled: this._activatable,
         });
-        clickAction.connectObject(`clicked`, () => {
+        clickGesture.connectObject(`recognize`, () => {
             this.activate(Clutter.get_current_event());
         });
-        clickAction.connectObject(`notify::pressed`, () => {
-            if (clickAction.pressed) {
+        clickGesture.connectObject(`notify::pressed`, () => {
+            if (clickGesture.pressed) {
                 this.add_style_pseudo_class(`active`);
             } else {
                 this.remove_style_pseudo_class(`active`);
             }
         });
-        this.add_action(clickAction);
+        this.add_action(clickGesture);
 
         this.connectObject(
             `notify::maxTextLength`, this._updateText.bind(this),
@@ -693,6 +693,7 @@ class QrCodeDialog extends ModalDialog.ModalDialog {
                 preferred_width: iconSize,
             });
             image.set_bytes(
+                global.stage.context.get_backend().get_cogl_context(),
                 new GLib.Bytes(data),
                 Cogl.PixelFormat.RGB_888,
                 iconSize,
