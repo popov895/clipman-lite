@@ -929,7 +929,7 @@ class PanelIndicator extends PanelMenu.Button {
             if (this._currentMenuItem !== currentMenuItem) {
                 this._currentMenuItem?.setOrnament(PopupMenu.Ornament.NONE);
                 this._currentMenuItem = currentMenuItem;
-                this._currentMenuItem?.setOrnament(PopupMenu.Ornament.DOT);
+                this._currentMenuItem?.setOrnament(PopupMenu.Ornament.CHECK);
             }
         });
     }
@@ -1186,7 +1186,7 @@ class PanelIndicator extends PanelMenu.Button {
         if (this._currentMenuItem !== currentMenuItem) {
             this._currentMenuItem?.setOrnament(PopupMenu.Ornament.NONE);
             this._currentMenuItem = currentMenuItem;
-            this._currentMenuItem?.setOrnament(PopupMenu.Ornament.DOT);
+            this._currentMenuItem?.setOrnament(PopupMenu.Ornament.CHECK);
         }
     }
 
